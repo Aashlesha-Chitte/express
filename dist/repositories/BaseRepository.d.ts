@@ -1,0 +1,31 @@
+import { customTypes } from '@gdo-enablers/dan-common';
+import IConnectionConfiguration from 'libs/IConnectionConfiguration';
+import IModelDetails from 'libs/IModelDetails';
+import { Document } from 'mongoose';
+import { IQueryBaseCreate, IQueryBaseDelete, IQueryBaseList } from './entities';
+export declare abstract class BaseRepository<D extends Document> {
+    static dummyField: string;
+    static generateObjectId(): string;
+    protected static updateConnectionList(clientCode: any): Promise<boolean>;
+    private static connectionList;
+    logger: any;
+    private modelDetails;
+    private options;
+    constructor(modelDetails: IModelDetails);
+    protected create(connectionConfiguration: IConnectionConfiguration, options: IQueryBaseCreate): Promise<D>;
+    protected insertMany(connectionConfiguration: IConnectionConfiguration, docs: IQueryBaseCreate[], options?: any | null): Promise<D[]>;
+    protected getById(connectionConfiguration: IConnectionConfiguration, id: string): Promise<customTypes.Nullable<D>>;
+    protected aggregate(connectionConfiguration: IConnectionConfiguration, query: any): Promise<customTypes.Nullable<D[]>>;
+    protected getByIds(connectionConfiguration: IConnectionConfiguration, ids: string[]): Promise<D[]>;
+    protected get(connectionConfiguration: IConnectionConfiguration, conditions: any, populate?: any | null): Promise<customTypes.Nullable<D>>;
+    protected getAll(connectionConfiguration: IConnectionConfiguration, conditions: any, projection?: any | null, options?: IQueryBaseList | null, populate?: any | null): Promise<D[]>;
+    protected count(connectionConfiguration: IConnectionConfiguration, conditions?: any): Promise<number>;
+    protected update(connectionConfiguration: IConnectionConfiguration, conditions: object, options: object): Promise<D>;
+    protected delete(connectionConfiguration: IConnectionConfiguration, query: IQueryBaseDelete): Promise<D>;
+    protected getModel(connectionConfiguration: IConnectionConfiguration): any;
+    protected getConnection(connectionConfiguration: IConnectionConfiguration): any;
+    protected getDbName(connectionConfiguration: IConnectionConfiguration): string;
+    protected assignId(result: any): any;
+    protected addMultiTenancyIds(connectionConfiguration: IConnectionConfiguration, options: any): any;
+    private getAtlasConnectionString;
+}
